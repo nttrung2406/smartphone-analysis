@@ -1,0 +1,1 @@
+Componment for pages is in here.
