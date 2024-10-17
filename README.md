@@ -2,7 +2,7 @@
 
 This is the React website to analyze and visualize the accidents dataset using D3.js (https://d3js.org/).
 
-** Installation**:
+**Installation**:
 
 *Step 1*: Make sure having install Node.js
 
