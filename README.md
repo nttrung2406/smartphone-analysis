@@ -13,6 +13,7 @@ This is the React website to analyze and visualize the accidents dataset using D
 *Step 3*: Install D3 (for data visulization) and Papaparse (for csv data processing)
 
 >> npm install d3
+
 >> npm install react-papaparse
 
 *Step 4*: start react app using this command
