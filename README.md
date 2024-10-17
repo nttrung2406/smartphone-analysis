@@ -21,7 +21,7 @@ This is the React website to analyze and visualize the accidents dataset using D
 
 If PORT is already been used, change the another port by using this command
 
->> set PORT=*another port* && npm start
+>> set PORT= <*another port*> && npm start
 
 This is the UI of the website:
 
