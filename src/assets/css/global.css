@@ -1,0 +1,138 @@
+/* MainPage*/
+
+.main-container {
+    background-color: #121212;
+    min-height: 100vh;
+    position: relative;
+    color: white;
+  }
+  
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* Overview*/
+
+.page-container {
+    margin-left: 20px;
+    padding: 20px;
+    color: white;
+    background-color: #121212;
+    min-height: 100vh;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+.text-content {
+    font-size: 1.1rem;
+    font: 'Robotto', sans-serif;
+}
+
+.tooltip {
+  position: absolute;
+  visibility: hidden;
+  background-color: rgb(48, 106, 145);
+  color: rgb(253, 254, 255);
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+}
+
+/* loading animation */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Side bar */
+
+.sidebar-container {
+  background: linear-gradient(180deg, #000000, #00008B);
+  padding: 30px;
+  width: 180px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: white;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.5);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 20px;
+}
+
+.link-style {
+  text-decoration: none;
+  color: #00FFFF;
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.link-style:hover {
+  color: #1E90FF; 
+  font-size: 1.3rem;
+}
+
+.dropdown-link-style {
+  text-decoration: none;
+  color: #00FFFF;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.dropdown-link-style:hover {
+  color: #1E90FF;
+}
+
+.sidebar-dropdown {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+/* Chevron icon styling */
+.chevron-icon {
+  font-size: 0.8rem;
+  margin-left: 10px;
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.chevron-icon.open {
+  transform: rotate(180deg); /* Rotate chevron when open */
+}
+
+.link-style:hover, .dropdown-link-style:hover {
+  color: #1E90FF;
+}
+
