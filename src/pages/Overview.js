@@ -1,113 +1,73 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { extractLatLong } from '../support/mapCreator';
-import '../assets/css/global.css';
-import worldData from '../assets/countries.geo.json';
-import * as d3 from 'd3';
+import React, { useEffect, useState } from 'react';
+import { extractPhoneData } from '../support/phoneSummary';
+import '../assets/global.css';
 
 const Overview = () => {
-  const svgRef = useRef(null);
-  const tooltipRef = useRef(null);
-  const [loading, setLoading] = useState(true);  // State to manage loading animation
+  const [phones, setPhones] = useState([]);
+  const [selectedPhone, setSelectedPhone] = useState(null);
 
   useEffect(() => {
-    const drawMap = async (coordinates) => {
-      const svg = d3.select(svgRef.current)
-        .style('background-color', '#121212');
-
-      const tooltip = d3.select(tooltipRef.current)
-        .style('position', 'absolute')
-        .style('visibility', 'hidden')
-        .style('background-color', 'rgb(48, 106, 145)')
-        .style('color', 'white')
-        .style('padding', '5px 10px')
-        .style('border-radius', '5px')
-        .style('font-size', '12px');
-
-      const updateDimensions = () => {
-        const width = svgRef.current.clientWidth;
-        const height = svgRef.current.clientHeight;
-
-        svg.attr('width', width)
-          .attr('height', height);
-
-        const projection = d3.geoMercator().fitSize([width, height], worldData);
-        const path = d3.geoPath().projection(projection);
-
-        // Clear previous elements
-        svg.selectAll('*').remove();
-
-        // Draw the world map
-        svg.selectAll('path')
-          .data(worldData.features)
-          .enter()
-          .append('path')
-          .attr('d', path)
-          .attr('fill', '#2d8c85')
-          .attr('stroke', 'white')
-          .attr('stroke-width', 0.5);
-
-        // Plot the accident coordinates on the map
-        svg.selectAll('circle')
-          .data(coordinates)
-          .enter()
-          .append('circle')
-          .attr('cx', d => projection([d.longitude, d.latitude])[0])
-          .attr('cy', d => projection([d.longitude, d.latitude])[1])
-          .attr('r', 4)
-          .attr('fill', 'red')
-          .on('mouseover', (event, d) => {
-            tooltip.style('visibility', 'visible').text('England');
-          })
-          .on('mousemove', (event) => {
-            tooltip
-              .style('top', (event.pageY - 20) + 'px')
-              .style('left', (event.pageX + 20) + 'px');
-          })
-          .on('mouseout', () => {
-            tooltip.style('visibility', 'hidden');
-          });
-      };
-
-      updateDimensions();
-
-      // Handle window resize
-      window.addEventListener('resize', updateDimensions);
-
-      // Cleanup function to remove event listener
-      return () => {
-        window.removeEventListener('resize', updateDimensions);
-      };
-    };
-
-    const fetchAndDrawMap = async () => {
+    const fetchData = async () => {
       try {
-        const coordinates = await extractLatLong();  // Draw the map
-        await drawMap(coordinates);  // Draw the map using the fetched coordinates
-        setLoading(false);  // Stop the loading animation when the map is drawn
+        // Fetch unique phone data
+        const data = await extractPhoneData();
+        setPhones(data);
       } catch (error) {
-        console.error("Error extracting coordinates:", error);
-        setLoading(false);  // Stop loading if an error occurs
+        console.error("Error loading phone data:", error);
       }
     };
-
-    fetchAndDrawMap();  // Start fetching coordinates and drawing the map
+    fetchData();
   }, []);
+
+  const handleSelectChange = (event) => {
+    const selectedModel = event.target.value;
+    const phone = phones.find(p => p.Product_Name === selectedModel);
+    setSelectedPhone(phone);
+  };
 
   return (
     <div className="page-container">
-      {/* Conditional rendering of loading spinner */}
-      {loading && (
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading map...</p>
+      <h2>Phone Information</h2>
+      
+      {/* Dropdown to select a phone model */}
+      <label htmlFor="phoneDropdown">Select a phone:</label>
+      <select id="phoneDropdown" onChange={handleSelectChange}>
+        <option value="">--Choose a Product--</option>
+        {phones.map(phone => (
+          <option key={phone.Product_Name} value={phone.Product_Name}>
+            {phone.Product_Name}
+          </option>
+        ))}
+      </select>
+
+      {/* Display phone details if a product is selected */}
+      {selectedPhone && (
+        <div className="phone-info-container">
+          {/* Image Section */}
+          <div className="image-section">
+            <img 
+              src={`${selectedPhone.Img_path}`} 
+              alt={selectedPhone.Product_Name} 
+              style={{ width: '200px', height: 'auto' }} 
+            />
+          </div>
+
+          {/* Information Section */}
+          <div className="info-section">
+            <h3>{selectedPhone.Product_Name}</h3>
+            <p><strong>Actual Price:</strong> {selectedPhone.Actual_price}</p>
+            <p><strong>Discount Price:</strong> {selectedPhone.Discount_price}</p>
+            <p><strong>Stars:</strong> {selectedPhone.Stars}</p>
+            <p><strong>Rating:</strong> {selectedPhone.Rating}</p>
+            <p><strong>Reviews:</strong> {selectedPhone.Reviews}</p>
+            <p><strong>RAM:</strong> {selectedPhone.RAM_GB} GB</p>
+            <p><strong>Storage:</strong> {selectedPhone.Storage_GB} GB</p>
+            <p><strong>Display Size:</strong> {selectedPhone.Display_Size} inches</p>
+            <p><strong>Camera:</strong> {selectedPhone.Camera}</p>
+            <p><strong>Description:</strong> {selectedPhone.Description}</p>
+          </div>
         </div>
       )}
-
-      <p className="text-content">
-        • Explore traffic accident data across England. Use this map to identify accident hotspots and uncover potential contributing factors such as weather conditions, time of day, and road infrastructure in statistics tab. Hover over points to learn more about specific locations.
-      </p>
-      <svg ref={svgRef} style={{ width: '100%', height: '400px' }}></svg>
-      <div ref={tooltipRef} className="tooltip"></div>
     </div>
   );
 };
