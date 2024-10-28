@@ -1,6 +1,6 @@
-# Traffic accident data analysis and visualization
+# Smartphone data analysis and visualization
 
-This is the React website to analyze and visualize the accidents dataset using D3.js (https://d3js.org/).
+This is the React website to analyze and visualize the smartphone dataset using D3.js (https://d3js.org/).
 
 **Installation**:
 
@@ -26,4 +26,5 @@ If PORT is already been used, change the another port by using this command
 
 This is the UI of the website:
 
-![image](https://github.com/user-attachments/assets/c307b450-cb66-4a76-9872-8e07d6e1495d)
+![image](https://github.com/user-attachments/assets/29b6e41a-1f67-4547-9cab-c36a4c9620e5)
+
