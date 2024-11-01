@@ -8,7 +8,7 @@ This is the React website to analyze and visualize the smartphone dataset using 
 
 *Step 2*: Create React application by using this command 
 
->> npm create-react-app app_name
+>> npx create-react-app app_name
 
 *Step 3*: Install D3 (for data visulization) and Papaparse (for csv data processing)
 
