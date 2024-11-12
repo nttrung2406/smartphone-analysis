@@ -16,6 +16,10 @@ This is the React website to analyze and visualize the smartphone dataset using 
 
 >> npm install react-papaparse
 
+>> npm install simple-statistic
+
+>> npm install d3-hexbin
+
 *Step 4*: start react app using this command
 
 >> npm start
