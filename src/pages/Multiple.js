@@ -1,30 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { extractTwoFeatureData } from '../support/multiFeatureExtractor';
 import * as d3 from 'd3';
 import '../assets/global.css';
-import { createCorrelationHeatmap } from '../support/multiFeatureRelationship';
+import { createCorrelationHeatmap,  createJointDistributionPlot, createKDEPlot
+} from '../support/multiFeatureRelationship';
 
 const Multiple = () => {
   const [feature1, setFeature1] = useState('');  // First feature selected by user
   const [feature2, setFeature2] = useState('');  // Second feature selected by user
-  const [recommendedFeatures, setRecommendedFeatures] = useState([]); // State to store CSV feature names
-  const [featureData, setFeatureData] = useState([]); // State to store data for selected features
   const [loading, setLoading] = useState(false); // Loading state
 
   const chartsContainerRef = useRef(null); // Ref for the chart container
-
-  // useEffect(() => {
-  //   const fetchFeatures = async () => {
-  //     try {
-  //       const data = await extractTwoFeatureData();
-  //       const featureNames = Object.keys(data[0]);
-  //       setRecommendedFeatures(featureNames);
-  //     } catch (error) {
-  //       console.error("Error fetching feature names:", error);
-  //     }
-  //   };
-  //   fetchFeatures();
-  // }, []);
 
   const startLoadingSpinner = () => {
     setLoading(true);
@@ -44,18 +30,13 @@ const Multiple = () => {
   
     try {
       const data = await extractTwoFeatureData(feature1, feature2);
-      setFeatureData(data);
-  
+      console.log("Extracted data:", data);  
       d3.select(chartsContainerRef.current).selectAll("*").remove();
-      console.log('chartsContainerRef.current:', chartsContainerRef.current);
   
       if (chartsContainerRef.current) {
-        // Visualize with imported functions, passing feature names
-        createCorrelationHeatmap(data, chartsContainerRef.current, feature1, feature2);
-        // createJointDistributionPlot(data, chartsContainerRef.current);
-        // createInteractionPlot(data, chartsContainerRef.current);
-        // createKDEPlot(data, chartsContainerRef.current);
-        // createFacetGrid(data, chartsContainerRef.current);
+        createCorrelationHeatmap(data, d3.select(chartsContainerRef.current), feature1, feature2);
+        createJointDistributionPlot(data, d3.select(chartsContainerRef.current), feature1, feature2);
+        createKDEPlot(data, d3.select(chartsContainerRef.current), feature1, feature2);
       } else {
         console.error("Charts container is not available.");
       }
@@ -65,7 +46,6 @@ const Multiple = () => {
       stopLoadingSpinner();
     }
   };
-  
 
   return (
     <div className="page-container">
