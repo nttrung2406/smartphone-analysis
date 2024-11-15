@@ -133,3 +133,57 @@ export const createKDEPlot = (data, container, feature1, feature2) => {
     svg.append("g").attr("transform", `translate(0, ${height - margin.bottom})`).call(d3.axisBottom(xScale));
     svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(yScale));
 };
+
+
+
+export const createScatterPlot = (data, container, feature1, feature2) => {
+  const chart = container.append('div').attr('class', 'chart');
+  chart.append('h4').text(`Scatter Plot for ${feature1} and ${feature2}`);
+
+  const svg = chart.append('svg').attr('width', 400).attr('height', 300);
+  const width = svg.attr('width');
+  const height = svg.attr('height');
+  const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+
+  const xScale = d3.scaleLinear()
+      .domain(d3.extent(data, d => +d[feature1]))
+      .range([margin.left, width - margin.right]);
+
+  const yScale = d3.scaleLinear()
+      .domain(d3.extent(data, d => +d[feature2]))
+      .range([height - margin.bottom, margin.top]);
+
+  svg.append("g")
+      .attr("transform", `translate(0, ${height - margin.bottom})`)
+      .call(d3.axisBottom(xScale).ticks(5));
+
+  svg.append("g")
+      .attr("transform", `translate(${margin.left}, 0)`)
+      .call(d3.axisLeft(yScale).ticks(5));
+
+  svg.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xScale(+d[feature1]))
+      .attr("cy", d => yScale(+d[feature2]))
+      .attr("r", 3)
+      .attr("fill", "steelblue")
+      .attr("opacity", 0.7);
+
+  // Add labels to the axes
+  svg.append("text")
+      .attr("class", "axis-label")
+      .attr("x", width / 2)
+      .attr("y", height - margin.bottom + 25)
+      .attr("text-anchor", "middle")
+      .text(feature1);
+
+  svg.append("text")
+      .attr("class", "axis-label")
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 15)
+      .attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)")
+      .text(feature2);
+};
