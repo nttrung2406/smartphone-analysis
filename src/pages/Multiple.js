@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { extractTwoFeatureData } from '../support/multiFeatureExtractor';
 import * as d3 from 'd3';
 import '../assets/global.css';
-import { createCorrelationHeatmap,  createJointDistributionPlot, createKDEPlot
+import { createCorrelationHeatmap,  createJointDistributionPlot, createKDEPlot,
+          createScatterPlot
 } from '../support/multiFeatureRelationship';
 
 const Multiple = () => {
@@ -37,6 +38,7 @@ const Multiple = () => {
         createCorrelationHeatmap(data, d3.select(chartsContainerRef.current), feature1, feature2);
         createJointDistributionPlot(data, d3.select(chartsContainerRef.current), feature1, feature2);
         createKDEPlot(data, d3.select(chartsContainerRef.current), feature1, feature2);
+        createScatterPlot(data, d3.select(chartsContainerRef.current), feature1, feature2);
       } else {
         console.error("Charts container is not available.");
       }
