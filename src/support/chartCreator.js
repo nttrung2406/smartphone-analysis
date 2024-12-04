@@ -4,14 +4,17 @@ export const createMissingValuesChart = (data, container, featureName) => {
     const missingCount = data.filter(d => !d || d === '').length;
     const filledCount = data.length - missingCount;
 
-    const chart = container.append('div').attr('class', 'chart');
+    const chart = container.append('div').attr('class', 'chart missing-value__chart');
     chart.append('h4').text(`Missing Values for ${featureName}`);
-
+    
     const svg = chart.append('svg').attr('width', '100%').attr('height', 250);
     const width = svg.node().getBoundingClientRect().width;
     const margin = { top: 10, right: 30, bottom: 40, left: 40 };
     const chartWidth = width - margin.left - margin.right;
-    const chartHeight = 200;
+    const chartHeight = chartWidth / 2;
+
+    //const width = parseInt(d3.select("body").style("width"));
+    //const height = width / 2; // Tỷ lệ 2:1
 
     const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -51,7 +54,7 @@ export const createUniqueValuesChart = (data, container, featureName) => {
     const uniqueCounts = d3.rollup(data, v => v.length, d => d);
     const uniqueValues = Array.from(uniqueCounts.entries()).map(([key, value]) => ({ key, value }));
 
-    const chart = container.append('div').attr('class', 'chart');
+    const chart = container.append('div').attr('class', 'chart unique-value__chart');
     chart.append('h4').text(`Unique Values for ${featureName}`);
 
     const svg = chart.append('svg').attr('width', '100%').attr('height', 250);
@@ -66,9 +69,16 @@ export const createUniqueValuesChart = (data, container, featureName) => {
         .domain(uniqueValues.map(d => d.key))
         .range([0, chartWidth])
         .padding(0.2);
+
     const yScale = d3.scaleLinear()
         .domain([0, d3.max(uniqueValues, d => d.value)])
         .range([chartHeight, 0]);
+
+    // Tooltip setup
+    // Add <p> element for displaying data
+    const tooltip = chart.append('div')
+        .attr('class', 'unique-data')
+        .style('display', 'block')
 
     // Draw bars
     g.selectAll('.bar')
@@ -80,7 +90,15 @@ export const createUniqueValuesChart = (data, container, featureName) => {
         .attr('y', d => yScale(d.value))
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yScale(d.value))
-        .attr('fill', 'steelblue');
+        .attr('fill', 'steelblue')
+        .on('mouseover', (event, d) => {
+            console.log(d.value)
+            tooltip.transition().duration(200).style('opacity', 1);
+            tooltip.html(`Value: ${d.value}`)
+                .style('right', `50px`)
+                .style('top', `50px`)
+                .style('background', 'white !important');
+        })
 
     g.append('g')
         .attr('transform', `translate(0, ${chartHeight})`)
@@ -88,6 +106,7 @@ export const createUniqueValuesChart = (data, container, featureName) => {
 
     g.append('g').call(d3.axisLeft(yScale));
 };
+
 
 export const createDistributionChart = (data, container, featureName) => {
     const chart = container.append('div').attr('class', 'chart');
@@ -115,6 +134,13 @@ export const createDistributionChart = (data, container, featureName) => {
         .domain([0, d3.max(histogram, d => d.length)])
         .range([chartHeight, 0]);
 
+    // Tooltip setup
+    // Add <p> element for displaying data
+    const tooltip = chart.append('div')
+        .attr('class', 'unique-data')
+        .style('display', 'block')
+
+
     // Draw bars
     g.selectAll('.bar')
         .data(histogram)
@@ -125,7 +151,15 @@ export const createDistributionChart = (data, container, featureName) => {
         .attr('y', d => yScale(d.length))
         .attr('width', d => xScale(d.x1) - xScale(d.x0))
         .attr('height', d => chartHeight - yScale(d.length))
-        .attr('fill', 'orange');
+        .attr('fill', 'orange')
+        .on('mouseover', (event, d) => {
+                tooltip.transition().duration(200).style('opacity', 1);
+                tooltip.html(`Value: ${d.length}`)
+                    .style('width', '200px')
+                    .style('right', `50px`)
+                    .style('top', `50px`)
+                    .style('background', 'white !important');
+            })
 
     // Add X-axis
     g.append('g')

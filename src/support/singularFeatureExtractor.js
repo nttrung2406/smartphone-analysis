@@ -7,15 +7,15 @@ import Papa from 'papaparse';
  */
 export const extractFeatureData = (featureName) => {
   return new Promise((resolve, reject) => {
-    const csvFilePath = process.env.PUBLIC_URL + '/Accidents.csv';  // Public folder 
+    const csvFilePath = process.env.PUBLIC_URL + '/Mobiles_Dataset.csv';  // Public folder  
 
     Papa.parse(csvFilePath, {
-      download: true,  
+      download: true,
       header: true,    
       skipEmptyLines: true,
       complete: (results) => {
         const data = results.data;
-
+        // console.log(data)  
         // Check if the featureName exists in the CSV headers
         if (!data[0] || !data[0].hasOwnProperty(featureName)) {
           reject(`Feature "${featureName}" does not exist in the CSV.`);
