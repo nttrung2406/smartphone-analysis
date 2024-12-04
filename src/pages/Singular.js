@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { extractFeatureData } from '../support/singularFeatureExtractor';
 import * as d3 from 'd3';
-import '../assets/global.css';
-import { createMissingValuesChart, createUniqueValuesChart, createDistributionChart } from '../support/chartCreator'; 
+import '../assets/css/global.css';
+import { createMissingValuesChart, createUniqueValuesChart, createDistributionChart } from '../support/chartCreator';
+import { renderMissingValue, renderUniqueValueChart } from '../support/singularInteractiveSupport';
 
 const Singular = () => {
   const [featureName, setFeatureName] = useState(''); // State to store selected feature
@@ -10,12 +11,12 @@ const Singular = () => {
   const [featureData, setFeatureData] = useState([]); // State to store data for the selected feature
   const [loading, setLoading] = useState(false); // Loading state
 
-  const chartsContainerRef = useRef(null); // Ref for the chart container
+  const chartsContainerRef = useRef(); // Ref for the chart container
 
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const data = await extractFeatureData(); 
+        const data = await extractFeatureData();
         const featureNames = Object.keys(data[0]);
         setRecommendedFeatures(featureNames);
       } catch (error) {
@@ -37,8 +38,8 @@ const Singular = () => {
   // Fetch and visualize data for the selected feature
   const fetchDataAndVisualize = async () => {
     if (!featureName) return;
-    startLoadingSpinner(); 
-    
+    startLoadingSpinner();
+
     try {
       const data = await extractFeatureData(featureName);
       setFeatureData(data);
@@ -46,7 +47,7 @@ const Singular = () => {
     } catch (error) {
       console.error(`Error fetching data for feature ${featureName}:`, error);
     } finally {
-      stopLoadingSpinner(); 
+      stopLoadingSpinner();
     }
   };
 
@@ -54,15 +55,18 @@ const Singular = () => {
     if (!data.length) return;
 
     const chartsContainer = d3.select(chartsContainerRef.current);
-    chartsContainer.selectAll('*').remove(); 
+    chartsContainer.selectAll('*').remove();
 
     // Use imported functions to create charts
     createMissingValuesChart(data, chartsContainer, featureName);
+    renderMissingValue(data, chartsContainer, featureName);
+
     createUniqueValuesChart(data, chartsContainer, featureName);
+
     createDistributionChart(data, chartsContainer, featureName);
 
     window.addEventListener('resize', () => {
-      chartsContainer.selectAll('*').remove(); 
+      chartsContainer.selectAll('*').remove();
       createMissingValuesChart(data, chartsContainer, featureName);
       createUniqueValuesChart(data, chartsContainer, featureName);
       createDistributionChart(data, chartsContainer, featureName);
