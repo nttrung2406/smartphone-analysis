@@ -1,31 +1,31 @@
 /* MainPage*/
 
 .main-container {
-    background-color: #121212;
-    min-height: 100vh;
-    position: relative;
-    color: white;
-  }
-  
+  background-color: #121212;
+  min-height: 100vh;
+  position: relative;
+  color: white;
+}
+
 .content {
-    margin-left: 250px;
-    padding: 20px;
+  margin-left: 250px;
+  padding: 20px;
 }
 
 /* Overview*/
 
 .page-container {
-    margin-left: 20px;
-    padding: 20px;
-    color: white;
-    background-color: #121212;
-    min-height: 100vh;
-    font-family: 'Orbitron', sans-serif;
-  }
-  
+  margin-left: 20px;
+  padding: 20px;
+  color: white;
+  background-color: #121212;
+  min-height: 100vh;
+  font-family: "Orbitron", sans-serif;
+}
+
 .text-content {
-    font-size: 1.1rem;
-    font: 'Robotto', sans-serif;
+  font-size: 1.1rem;
+  font: "Robotto", sans-serif;
 }
 
 .tooltip {
@@ -36,7 +36,7 @@
   padding: 5px;
   border-radius: 5px;
   font-size: 12px;
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* loading animation */
@@ -63,15 +63,18 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-
 
 /* Side bar */
 
 .sidebar-container {
-  background: linear-gradient(180deg, #000000, #00008B);
+  background: linear-gradient(180deg, #000000, #00008b);
   padding: 30px;
   width: 180px;
   height: 100vh;
@@ -80,7 +83,7 @@
   left: 0;
   color: white;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.5);
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
 }
 
 .sidebar-nav {
@@ -94,25 +97,25 @@
 
 .link-style {
   text-decoration: none;
-  color: #00FFFF;
+  color: #00ffff;
   font-size: 1.2rem;
   transition: 0.3s;
 }
 
 .link-style:hover {
-  color: #1E90FF; 
+  color: #1e90ff;
   font-size: 1.3rem;
 }
 
 .dropdown-link-style {
   text-decoration: none;
-  color: #00FFFF;
+  color: #00ffff;
   font-size: 1rem;
   transition: 0.3s;
 }
 
 .dropdown-link-style:hover {
-  color: #1E90FF;
+  color: #1e90ff;
 }
 
 .sidebar-dropdown {
@@ -132,7 +135,46 @@
   transform: rotate(180deg); /* Rotate chevron when open */
 }
 
-.link-style:hover, .dropdown-link-style:hover {
-  color: #1E90FF;
+.link-style:hover,
+.dropdown-link-style:hover {
+  color: #1e90ff;
 }
 
+.chart {
+  position: relative;
+}
+
+.data-info {
+  position: absolute;
+  top: 28px;
+  left: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 5px;
+  border: 1px solid #ccc;
+  background: white;
+  color: black;
+}
+
+.chart:hover .data-info {
+  display: block !important; /* Show on hover */
+}
+
+.bar:hover .data-info {
+  display: block !important;
+}
+
+div.unique-data {
+  pointer-events: none; /* Để tránh ảnh hưởng khi hover */
+  position: absolute;
+  width: 100px;
+  height: 30px;
+  top: 0;
+  right: 0;
+  background: #fff;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+}
