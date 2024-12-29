@@ -42,7 +42,7 @@ export const extractTwoFeatureData = (featureName1, featureName2) => {
         }));
 
         console.log('Feature data:', featureData);
-
+        console.log(typeof featureData[1])
         resolve(featureData);
       },
       error: (err) => {
