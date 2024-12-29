@@ -7,9 +7,11 @@ import Papa from 'papaparse';
  */
 export const extractFeatureData = (featureName) => {
   return new Promise((resolve, reject) => {
-    const csvFilePath = process.env.PUBLIC_URL + '/Mobiles_Dataset.csv';  // Public folder 
+    const csvFilePath = process.env.PUBLIC_URL + '/Mobiles_Dataset.csv';  // Public folder  
 
     Papa.parse(csvFilePath, {
+      download: true,
+      header: true,
       download: true,
       header: true,
       skipEmptyLines: true,
