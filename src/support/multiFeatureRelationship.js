@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { hexbin as d3Hexbin } from 'd3-hexbin';
-import { sampleCorrelation } from 'simple-statistics';
+import { type } from 'jquery';
 
 export const createTooltip = (container) => {
     const tooltip = container.append("div")
@@ -8,13 +8,6 @@ export const createTooltip = (container) => {
         .style("position", "absolute")
         .style("background", "rgba(0, 0, 0, 0.7)")
         .style("color", "#fff")
-<<<<<<< Updated upstream
-        .style("padding", "8px")
-        .style("border-radius", "4px")
-        .style("visibility", "hidden")
-        .style("pointer-events", "none");
-    
-=======
         .style("padding", "4px")
         .style("border-radius", "4px")
         .style("visibility", "hidden")
@@ -24,20 +17,14 @@ export const createTooltip = (container) => {
         .style("white-space", "normal") // Cho phép nhiều dòng nếu cần
         .style("overflow-wrap", "break-word"); // Đảm bảo không bị tràn ra ngoài
 
->>>>>>> Stashed changes
     return tooltip;
 };
 
 export const showTooltip = (tooltip, event, content) => {
     tooltip.style("visibility", "visible")
         .html(content)
-<<<<<<< Updated upstream
-        .style("top", `${event.pageY + 10}px`)
-        .style("left", `${event.pageX + 10}px`);
-=======
         .style("top", `${Math.min(event.pageY + 10, window.innerHeight - tooltip.node().offsetHeight - 5)}px`)
         .style("left", `${Math.min(event.pageX + 10, window.innerWidth - tooltip.node().offsetWidth - 5)}px`);
->>>>>>> Stashed changes
 };
 
 export const hideTooltip = (tooltip) => {
@@ -157,46 +144,6 @@ export const createJointDistributionPlot = (data, container, feature1, feature2)
         .domain([0, d3.max(binCounts, d => d.totalCount)]);
 
     svg.append("g").selectAll("path")
-<<<<<<< Updated upstream
-        .data(bins)
-        .enter()
-        .append("path")
-        .attr("d", hexbin.hexagon())
-        .attr("transform", d => `translate(${d.x},${d.y})`)
-        .attr("fill", d => colorScale(d.length))
-        .on("mouseover", function (event, d) {
-            // Thu nhỏ hình lục giác khi mouseover
-            d3.select(this)
-                .transition()
-                .duration(150)
-                .attr("transform", d => `translate(${d.x},${d.y}) scale(0.8)`); // Thu nhỏ 80%
-
-            // Hiển thị tooltip
-            const content = d.map(p => `
-                <strong>${feature1}:</strong> ${p[feature1]}<br/>
-                <strong>${feature2}:</strong> ${p[feature2]}
-            `).join('<br/><br/>');
-            showTooltip(tooltip, event, content);
-        })
-        .on("mousemove", (event) => {
-            tooltip.style("top", `${event.pageY + 10}px`)
-                .style("left", `${event.pageX + 10}px`);
-        })
-        .on("mouseout", function () {
-            // Khôi phục kích thước hình lục giác khi mouseout
-            d3.select(this)
-                .transition()
-                .duration(150)
-                .attr("transform", d => `translate(${d.x},${d.y}) scale(1)`); // Quay lại kích thước ban đầu
-
-            // Ẩn tooltip
-            hideTooltip(tooltip);
-        });
-
-    svg.append("g").attr("transform", `translate(0, ${height - margin.bottom})`).call(d3.axisBottom(xScale));
-    svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(yScale));
-};
-=======
         .data(binCounts)
         .enter()
         .append("path")
@@ -208,7 +155,6 @@ export const createJointDistributionPlot = (data, container, feature1, feature2)
                 .transition()
                 .duration(150)
                 .attr("transform", d => `translate(${d.bin.x},${d.bin.y}) scale(0.8)`);
->>>>>>> Stashed changes
 
             // Tính tổng số count của ô lục giác
             const totalCount = d.totalCount;
@@ -250,20 +196,20 @@ export const createJointDistributionPlot = (data, container, feature1, feature2)
 
     // Append the x-axis
     svg.append("g")
-    .attr("transform", `translate(0, ${height - margin.bottom})`)
-    .call(d3.axisBottom(xScale)
-        .tickFormat(d3.format(","))) // Hiển thị giá trị đầy đủ trên trục x
-    .selectAll("text")
-    .style("font-size", "12px");
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale)
+            .tickFormat(d3.format(","))) // Hiển thị giá trị đầy đủ trên trục x
+        .selectAll("text")
+        .style("font-size", "12px");
 
     // Append the y-axis
     svg.append("g")
-    .attr("transform", `translate(${margin.left}, 0)`)
-    .call(d3.axisLeft(yScale)
-        .tickFormat(d3.format(","))) // Hiển thị giá trị đầy đủ trên trục y
-    .selectAll("text")
-    .style("font-size", "12px");
-    };
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yScale)
+            .tickFormat(d3.format(","))) // Hiển thị giá trị đầy đủ trên trục y
+        .selectAll("text")
+        .style("font-size", "12px");
+};
 
 export const createKDEPlot = (data, container, feature1, feature2) => {
     const chart = container.append('div').attr('class', 'chart');
@@ -304,10 +250,6 @@ export const createKDEPlot = (data, container, feature1, feature2) => {
     svg.append("g").attr("transform", `translate(0, ${height - margin.bottom})`).call(d3.axisBottom(xScale));
     svg.append("g").attr("transform", `translate(${margin.left}, 0)`).call(d3.axisLeft(yScale));
 };
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 export const createScatterPlot = (data, container, feature1, feature2) => {
     const chart = container.append('div').attr('class', 'chart');
     chart.append('h4').text(`Scatter Plot for ${feature1} and ${feature2}`);
