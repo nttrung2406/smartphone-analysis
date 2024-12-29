@@ -38,7 +38,7 @@ export const extractTwoFeatureData = (featureName1, featureName2) => {
         // Extract the data for the two given features
         const featureData = data.map(row => ({
           [trimmedFeatureName1]: parseFloat(row[trimmedFeatureName1]) || row[trimmedFeatureName1],
-          [trimmedFeatureName2]: parseFloat(row[trimmedFeatureName2]) || row[trimmedFeatureName2],  
+          [trimmedFeatureName2]: parseFloat(row[trimmedFeatureName2]) || row[trimmedFeatureName2],
         }));
 
         console.log('Feature data:', featureData);
