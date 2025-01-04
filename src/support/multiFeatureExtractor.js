@@ -41,8 +41,8 @@ export const extractTwoFeatureData = (featureName1, featureName2) => {
           [trimmedFeatureName2]: parseFloat(row[trimmedFeatureName2]) || row[trimmedFeatureName2],
         }));
 
-        console.log('Feature data:', featureData);
-        console.log(typeof featureData[1])
+        // console.log('Feature data:', featureData);
+        // console.log(typeof featureData[1])
         resolve(featureData);
       },
       error: (err) => {
